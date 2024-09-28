@@ -18,21 +18,21 @@ export const goods = [
 
 export const App = () => {
   const nothingSelected = 'No goods selected';
-  const [food, selectFood] = useState('Jam');
+  const [selectedGood, setSelectedGood] = useState('Jam');
 
   return (
     <main className="section container">
       <h1 className="title is-flex is-align-items-center">
-        {food === false ? (
+        {!selectedGood ? (
           nothingSelected
         ) : (
           <>
-            {`${food} is selected`}
+            {`${selectedGood} is selected`}
             <button
               data-cy="ClearButton"
               type="button"
               className="delete ml-3"
-              onClick={() => selectFood(false)}
+              onClick={() => setSelectedGood('')}
             />
           </>
         )}
@@ -49,19 +49,26 @@ export const App = () => {
                 data-cy="Good"
                 key={good}
                 className={classNames({
-                  'has-background-success-light': food === good,
+                  'has-background-success-light': selectedGood === good,
                 })}
               >
                 <td>
                   <button
-                    data-cy={food === good ? 'RemoveButton' : 'AddButton'}
+                    data-cy={classNames({
+                      RemoveButton: selectedGood === good,
+                      AddButton: selectedGood !== good,
+                    })}
                     type="button"
-                    className={`button ${food === good && 'is-info'}`}
+                    className={classNames('button', {
+                      'is-info': selectedGood === good,
+                    })}
                     onClick={() =>
-                      food !== good ? selectFood(good) : selectFood(false)
+                      selectedGood !== good
+                        ? setSelectedGood(good)
+                        : setSelectedGood('')
                     }
                   >
-                    {food === good ? minus : plus}
+                    {selectedGood === good ? minus : plus}
                   </button>
                 </td>
 
